@@ -30,7 +30,8 @@ RUN             echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 RUN             chpasswd <<<"root:root"
 RUN             chpasswd <<<"builder:builder"
 
-RUN             mkdir -p /rae/{build,dst,src}
+RUN             mkdir -p /rae/{build,dst,src,util}
+RUN             chown "builder:users" /rae/{build,dst,src,util}
 
 #
 # Rebuild from scratch to drop all intermediate layers and keep the final image
@@ -40,6 +41,7 @@ RUN             mkdir -p /rae/{build,dst,src}
 FROM            scratch
 COPY            --from=target . .
 
+ENV             BUILDDIR="/rae/build"
+ENV             PKGDEST="/rae/dst"
 USER            builder:users
-WORKDIR         /rae/workdir
-CMD             ["/usr/bin/bash"]
+WORKDIR         /rae/src
