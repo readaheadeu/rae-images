@@ -32,6 +32,7 @@ RUN             chpasswd <<<"builder:builder"
 
 RUN             mkdir -p /rae/{build,dst,src,util}
 COPY            ./util/buildpkg.sh /rae/util/
+COPY            ./util/buildrepo.sh /rae/util/
 RUN             chown -R "builder:users" /rae
 
 #
