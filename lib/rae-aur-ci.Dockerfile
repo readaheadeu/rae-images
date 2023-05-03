@@ -31,7 +31,8 @@ RUN             chpasswd <<<"root:root"
 RUN             chpasswd <<<"builder:builder"
 
 RUN             mkdir -p /rae/{build,dst,src,util}
-RUN             chown "builder:users" /rae/{build,dst,src,util}
+COPY            ./util/buildpkg.sh /rae/util/
+RUN             chown -R "builder:users" /rae
 
 #
 # Rebuild from scratch to drop all intermediate layers and keep the final image
@@ -41,7 +42,5 @@ RUN             chown "builder:users" /rae/{build,dst,src,util}
 FROM            scratch
 COPY            --from=target . .
 
-ENV             BUILDDIR="/rae/build"
-ENV             PKGDEST="/rae/dst"
 USER            builder:users
-WORKDIR         /rae/src
+WORKDIR         /rae/workdir
