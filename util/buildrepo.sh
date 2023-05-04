@@ -16,15 +16,17 @@ shopt -s nullglob
 
 X_DSTDIR=""
 X_FILES=()
+X_NAME=""
 X_SRCDIR=""
 
 # Parameter parsing
 
-X_DSTDIR="$1"
-X_SRCDIR="$2"
+X_NAME="$1"
+X_DSTDIR="$2"
+X_SRCDIR="$3"
 
 if [[ -z "${X_DSTDIR}" || -z "${X_SRCDIR}" ]] ; then
-        echo >&2 "Usage: $0 <dst-dir> <src-dir>"
+        echo >&2 "Usage: $0 <name> <dst-dir> <src-dir>"
         exit 1
 fi
 
@@ -38,8 +40,15 @@ if (( ${#X_FILES[@]} > 0 )) ; then
 fi
 
 repo-add \
-        "/rae/dst/repo/repo.db.tar.gz" \
+        "/rae/dst/repo/${X_NAME}.db.tar.gz" \
         /rae/dst/repo/*.pkg.*
+
+# Replace the symlinks by a copy to avoid relying on symlink-resolution when
+# serving the repository.
+rm "/rae/dst/repo/${X_NAME}.db"
+rm "/rae/dst/repo/${X_NAME}.files"
+cp "/rae/dst/repo/${X_NAME}.db.tar.gz" "/rae/dst/repo/${X_NAME}.db"
+cp "/rae/dst/repo/${X_NAME}.files.tar.gz" "/rae/dst/repo/${X_NAME}.files"
 
 # Since `repo-add` requires running as user, and containers still lack idmapped
 # mounts, we simply copy all results to the destination directory as super
