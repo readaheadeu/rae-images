@@ -92,10 +92,9 @@ target "virtual-platforms" {
 }
 
 /*
- * dbrk-fedora-base - DBus Broker Fedora Test Images
+ * rae-aur-ci - AUR CI for Readahead.eu
  *
- * The following groups and targets build test images used by dbus-broker. They
- * build on the official fedora images.
+ * Archlinux images for the custom AUR of readahead.eu.
  */
 
 group "all-rae-aur-ci" {
@@ -105,16 +104,6 @@ group "all-rae-aur-ci" {
 }
 
 target "virtual-rae-aur-ci" {
-        args = {
-                RAE_DNF_PACKAGES = join(",", [
-                        "util-linux",
-                        "valgrind",
-                        "vim",
-                ]),
-                RAE_DNF_GROUPS = join(",", [
-                        "development-tools",
-                ]),
-        }
         dockerfile = "lib/rae-aur-ci.Dockerfile"
         inherits = [
                 "virtual-default",
