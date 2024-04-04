@@ -113,6 +113,36 @@ target "rae-aur-ci-latest" {
 }
 
 /*
+ * rae-lftp
+ */
+
+group "all-rae-lftp" {
+        targets = [
+                "rae-lftp-latest",
+        ]
+}
+
+target "virtual-rae-lftp" {
+        dockerfile = "rae-lftp.Dockerfile"
+        inherits = [
+                "virtual-default",
+                "virtual-platforms",
+        ]
+}
+
+target "rae-lftp-latest" {
+        args = {
+                RAE_FROM = "docker.io/library/alpine:latest",
+        }
+        inherits = [
+                "virtual-rae-lftp",
+        ]
+        tags = concat(
+                mirror("rae-lftp", "latest", "", RAE_UNIQUEID),
+        )
+}
+
+/*
  * rae-zola
  */
 
