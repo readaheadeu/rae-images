@@ -1,0 +1,44 @@
+name: "CI for Container Builds"
+
+on:
+  pull_request:
+    paths:
+    - ".github/workflows/containers.yml"
+    - "lib/containers/**"
+  push:
+    branches-ignore: ["pr/**"]
+    tags: ["**"]
+    paths:
+    - ".github/workflows/containers.yml"
+    - "lib/containers/**"
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: "Deploy to Production"
+        required: false
+        default: "no"
+      target:
+        description: "Container Target"
+        required: true
+        default: "all-images"
+
+defaults:
+  run:
+    shell: "bash"
+
+jobs:
+  build:
+    name: "Container Build/Test/Deploy"
+    uses: readaheadeu/rae-actions/.github/workflows/lib-docker-bake.yml@v1
+
+    permissions:
+      packages: write
+
+    secrets:
+      ghcrpass: ${{ secrets.GITHUB_TOKEN }}
+
+    with:
+      deploy: ${{ inputs.deploy == 'yes' && true || false }}
+      ghcruser: ${{ github.actor }}
+      source: "./lib/containers"
+      target: ${{ inputs.target || 'all-images' }}

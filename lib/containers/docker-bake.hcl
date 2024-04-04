@@ -104,7 +104,7 @@ group "all-rae-aur-ci" {
 }
 
 target "virtual-rae-aur-ci" {
-        dockerfile = "lib/rae-aur-ci.Dockerfile"
+        dockerfile = "rae-aur-ci.Dockerfile"
         inherits = [
                 "virtual-default",
                 "virtual-platforms",
