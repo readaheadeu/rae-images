@@ -68,6 +68,7 @@ function "mirror" {
 group "all-images" {
         targets = [
                 "all-rae-aur-ci",
+                "all-rae-zola",
         ]
 }
 
@@ -92,9 +93,7 @@ target "virtual-platforms" {
 }
 
 /*
- * rae-aur-ci - AUR CI for Readahead.eu
- *
- * Archlinux images for the custom AUR of readahead.eu.
+ * rae-aur-ci
  */
 
 group "all-rae-aur-ci" {
@@ -120,5 +119,35 @@ target "rae-aur-ci-latest" {
         ]
         tags = concat(
                 mirror("rae-aur-ci", "latest", "", RAE_UNIQUEID),
+        )
+}
+
+/*
+ * rae-zola
+ */
+
+group "all-rae-zola" {
+        targets = [
+                "rae-zola-latest",
+        ]
+}
+
+target "virtual-rae-zola" {
+        dockerfile = "rae-zola.Dockerfile"
+        inherits = [
+                "virtual-default",
+                "virtual-platforms",
+        ]
+}
+
+target "rae-zola-latest" {
+        args = {
+                RAE_FROM = "ghcr.io/getzola/zola:v0.18.0",
+        }
+        inherits = [
+                "virtual-rae-zola",
+        ]
+        tags = concat(
+                mirror("rae-zola", "latest", "", RAE_UNIQUEID),
         )
 }
