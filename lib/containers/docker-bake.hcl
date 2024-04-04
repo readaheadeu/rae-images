@@ -55,14 +55,7 @@ function "mirror" {
 }
 
 /*
- * Target Groups
- *
- * The following section defines some custom target groups, which we use in
- * the CI system to rebuild a given set of images.
- *
- *     all-images
- *         Build all "product" images. That is, all images that are part of
- *         the project release and thus used by external entities.
+ * Groups
  */
 
 group "all-images" {
@@ -73,10 +66,7 @@ group "all-images" {
 }
 
 /*
- * Virtual Base Targets
- *
- * This section defines virtual base targets, which are shared across the
- * different dependent targets.
+ * Virtual Targets
  */
 
 target "virtual-default" {

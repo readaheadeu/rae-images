@@ -1,15 +1,12 @@
-rae-images
-==========
-
-Readahead.eu Container and Machine Image Repository
+# rae-images - Readahead Container and Machine Images
 
 This repository provides a registry for container and machine images built
-for the Readahead.eu project. It provides the build infrastructure as well
-as deployment targets to serve the images.
+for the Readahead. It provides the build infrastructure as well as deployment
+targets to serve the images.
 
 ### Project
 
- * **Website**: <https://readahead.eu/lib/rae-images>
+ * **Website**: <https://readahead.eu/p/rae-images>
  * **Bug Tracker**: <https://github.com/readaheadeu/rae-images/issues>
 
 ### Requirements

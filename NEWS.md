@@ -1,4 +1,4 @@
-# rae-images - Readahead.eu Container and Machine Image Repository
+# rae-images - Readahead Container and Machine Images
 
 ## CHANGES WITH 1.0.0:
 
