@@ -61,6 +61,7 @@ function "mirror" {
 group "all-images" {
         targets = [
                 "all-rae-aur-ci",
+                "all-rae-lftp",
                 "all-rae-zola",
         ]
 }
