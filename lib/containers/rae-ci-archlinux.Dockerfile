@@ -39,6 +39,7 @@ RUN             pacman -S --needed --noconfirm \
                         lld \
                         meson \
                         procps-ng \
+                        python-docutils \
                         rust-bindgen \
                         rustup \
                         strace \
