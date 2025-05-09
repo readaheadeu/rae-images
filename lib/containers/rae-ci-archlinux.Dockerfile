@@ -20,6 +20,7 @@ FROM            "${RAE_FROM}" AS target
 
 WORKDIR         /rae/sys
 
+# Install required packages
 RUN             pacman -Sy --noconfirm
 RUN             pacman -Su --noconfirm
 RUN             pacman -S --needed --noconfirm \
@@ -28,6 +29,7 @@ RUN             pacman -S --needed --noconfirm \
                         coreutils \
                         curl \
                         dbus \
+                        debuginfod \
                         expat \
                         gcc-libs \
                         git \
@@ -59,21 +61,25 @@ RUN             pacman -S --needed --noconfirm \
                         lib32-glibc \
                         lib32-systemd
 
+# Enable git workaround
 RUN             git config --system --add safe.directory '*'
 
+# Add `runner` as a user and group.
 RUN             useradd -ms /bin/bash -g users -G wheel runner
 RUN             echo "runner ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 RUN             chpasswd <<<"root:root"
 RUN             chpasswd <<<"runner:runner"
 
-RUN             mkdir -p /rae/runner/{build,src,sys/{cargo,rustup},workdir}
+# Create `/rae/runner`, chown it, and switch to the new user.
+RUN             mkdir -p /rae/runner
 RUN             chown -R "runner:users" /rae/runner
 WORKDIR         /rae/runner
 USER            runner:users
 
+# Install Rust via `rustup`.
+RUN             mkdir -p /rae/runner/sys/{cargo,rustup}
 ENV             CARGO_HOME=/rae/runner/sys/cargo
 ENV             RUSTUP_HOME=/rae/runner/sys/rustup
-
 RUN             rustup toolchain install \
                         --component cargo,clippy,miri,rust-std,rustc \
                         --profile minimal \
@@ -86,6 +92,15 @@ RUN             rustup toolchain install \
                         stable
 RUN             rustup default stable
 
+# Configure debuginfo and cache some basics to ensure valgrind works.
+RUN             mkdir -p /rae/runner/sys/debuginfod
+ENV             DEBUGINFOD_CACHE_PATH=/rae/runner/sys/debuginfod
+ENV             DEBUGINFOD_URLS="https://debuginfod.elfutils.org/"
+RUN             debuginfod-find debuginfo /usr/lib/ld-linux-*
+
+# Create some default directories for the user.
+RUN             mkdir -p /rae/runner/{build,src,workdir}
+
 #
 # Rebuild from scratch to drop all intermediate layers and keep the final image
 # as small as possible. Then setup the entrypoint.
@@ -95,6 +110,8 @@ FROM            scratch
 COPY            --from=target . .
 
 ENV             CARGO_HOME=/rae/runner/sys/cargo
+ENV             DEBUGINFOD_CACHE_PATH=/rae/runner/sys/debuginfod
+ENV             DEBUGINFOD_URLS="https://debuginfod.elfutils.org/"
 ENV             RUSTUP_HOME=/rae/runner/sys/rustup
 
 USER            runner:users
