@@ -61,6 +61,7 @@ function "mirror" {
 group "all-images" {
         targets = [
                 "all-rae-aur-ci",
+                "all-rae-ci-archlinux",
                 "all-rae-lftp",
                 "all-rae-zola",
         ]
@@ -110,6 +111,36 @@ target "rae-aur-ci-latest" {
         ]
         tags = concat(
                 mirror("rae-aur-ci", "latest", "", RAE_UNIQUEID),
+        )
+}
+
+/*
+ * rae-ci-archlinux
+ */
+
+group "all-rae-ci-archlinux" {
+        targets = [
+                "rae-ci-archlinux-latest",
+        ]
+}
+
+target "virtual-rae-ci-archlinux" {
+        dockerfile = "rae-ci-archlinux.Dockerfile"
+        inherits = [
+                "virtual-default",
+                "virtual-platforms",
+        ]
+}
+
+target "rae-ci-archlinux-latest" {
+        args = {
+                RAE_FROM = "docker.io/library/archlinux:multilib-devel",
+        }
+        inherits = [
+                "virtual-rae-ci-archlinux",
+        ]
+        tags = concat(
+                mirror("rae-ci-archlinux", "latest", "", RAE_UNIQUEID),
         )
 }
 
