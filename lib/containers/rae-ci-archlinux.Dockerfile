@@ -111,7 +111,7 @@ COPY            --from=target . .
 
 ENV             CARGO_HOME=/rae/runner/sys/cargo
 ENV             DEBUGINFOD_CACHE_PATH=/rae/runner/sys/debuginfod
-ENV             DEBUGINFOD_URLS="https://debuginfod.elfutils.org/"
+ENV             DEBUGINFOD_URLS="/dev/null"
 ENV             RUSTUP_HOME=/rae/runner/sys/rustup
 
 USER            runner:users
