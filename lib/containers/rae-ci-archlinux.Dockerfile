@@ -21,6 +21,7 @@ FROM            "${RAE_FROM}" AS target
 WORKDIR         /rae/sys
 
 # Install required packages
+RUN             echo -e "[core-debug]\nInclude = /etc/pacman.d/mirrorlist" >>/etc/pacman.conf
 RUN             pacman -Sy --noconfirm
 RUN             pacman -Su --noconfirm
 RUN             pacman -S --needed --noconfirm \
@@ -29,12 +30,12 @@ RUN             pacman -S --needed --noconfirm \
                         coreutils \
                         curl \
                         dbus \
-                        debuginfod \
                         expat \
                         gcc-libs \
                         git \
                         glib2 \
                         glibc \
+                        glibc-debug \
                         htop \
                         jq \
                         libcap-ng \
@@ -92,12 +93,6 @@ RUN             rustup toolchain install \
                         stable
 RUN             rustup default stable
 
-# Configure debuginfo and cache some basics to ensure valgrind works.
-RUN             mkdir -p /rae/runner/sys/debuginfod
-ENV             DEBUGINFOD_CACHE_PATH=/rae/runner/sys/debuginfod
-ENV             DEBUGINFOD_URLS="https://debuginfod.elfutils.org/"
-RUN             debuginfod-find debuginfo /usr/lib/ld-linux-*
-
 # Create some default directories for the user.
 RUN             mkdir -p /rae/runner/{build,src,workdir}
 
@@ -110,8 +105,6 @@ FROM            scratch
 COPY            --from=target . .
 
 ENV             CARGO_HOME=/rae/runner/sys/cargo
-ENV             DEBUGINFOD_CACHE_PATH=/rae/runner/sys/debuginfod
-ENV             DEBUGINFOD_URLS="/dev/null"
 ENV             RUSTUP_HOME=/rae/runner/sys/rustup
 
 USER            runner:users
