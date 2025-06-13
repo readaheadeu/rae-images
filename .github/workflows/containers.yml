@@ -29,7 +29,7 @@ defaults:
 jobs:
   build:
     name: "Container Build/Test/Deploy"
-    uses: readaheadeu/rae-actions/.github/workflows/lib-docker-bake.yml@main
+    uses: readaheadeu/rae-actions/.github/workflows/lib-docker-bake.yml@v1
 
     permissions:
       packages: write
