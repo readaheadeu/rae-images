@@ -62,6 +62,7 @@ group "all-images" {
         targets = [
                 "all-rae-aur-ci",
                 "all-rae-ci-archlinux",
+                "all-rae-ci-ubuntu",
                 "all-rae-lftp",
                 "all-rae-zola",
         ]
@@ -141,6 +142,39 @@ target "rae-ci-archlinux-latest" {
         ]
         tags = concat(
                 mirror("rae-ci-archlinux", "latest", "", RAE_UNIQUEID),
+        )
+}
+
+/*
+ * rae-ci-ubuntu
+ */
+
+group "all-rae-ci-ubuntu" {
+        targets = [
+                "rae-ci-ubuntu-latest",
+        ]
+}
+
+target "virtual-rae-ci-ubuntu" {
+        dockerfile = "rae-ci-ubuntu.Dockerfile"
+        inherits = [
+                "virtual-default",
+        ]
+        platforms = [
+                "linux/amd64",
+                "linux/arm64",
+        ]
+}
+
+target "rae-ci-ubuntu-latest" {
+        args = {
+                RAE_FROM = "docker.io/library/ubuntu:latest",
+        }
+        inherits = [
+                "virtual-rae-ci-ubuntu",
+        ]
+        tags = concat(
+                mirror("rae-ci-ubuntu", "latest", "", RAE_UNIQUEID),
         )
 }
 
