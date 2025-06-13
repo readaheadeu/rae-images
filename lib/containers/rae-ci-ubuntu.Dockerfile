@@ -60,6 +60,7 @@ RUN             apt-get install -y \
                                 "libc-dev" \
                                 "libcap-ng-dev" \
                                 "libclang-dev" \
+                                "libclang-rt-dev" \
                                 "libdbus-1-dev" \
                                 "libexpat-dev" \
                                 "libglib2.0-dev" \
