@@ -83,15 +83,17 @@ RUN             mkdir -p /rae/runner/sys/{cargo,rustup}
 ENV             CARGO_HOME=/rae/runner/sys/cargo
 ENV             RUSTUP_HOME=/rae/runner/sys/rustup
 RUN             rustup toolchain install \
-                        --component cargo,clippy,miri,rust-std,rustc \
-                        --profile minimal \
-                        --target i686-unknown-linux-gnu,x86_64-unknown-linux-gnu \
-                        nightly
+                        --component "cargo,clippy,miri,rust-std,rustc" \
+                        --profile "minimal" \
+                        --target "i686-unknown-linux-gnu,x86_64-unknown-linux-gnu" \
+                        -- \
+                        "nightly"
 RUN             rustup toolchain install \
-                        --component cargo,clippy,rust-std,rustc \
-                        --profile minimal \
-                        --target i686-unknown-linux-gnu,x86_64-unknown-linux-gnu \
-                        stable
+                        --component "cargo,clippy,rust-std,rustc" \
+                        --profile "minimal" \
+                        --target "i686-unknown-linux-gnu,x86_64-unknown-linux-gnu" \
+                        -- \
+                        "stable"
 RUN             rustup default stable
 
 # Create some default directories for the user.
