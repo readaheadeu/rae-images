@@ -43,6 +43,7 @@ RUN             pacman -S --needed --noconfirm \
                         meson \
                         procps-ng \
                         python-docutils \
+                        reuse \
                         rust-bindgen \
                         rustup \
                         strace \

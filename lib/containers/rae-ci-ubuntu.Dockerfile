@@ -83,6 +83,7 @@ RUN             apt-get install -y \
                                 "python3-pytest" \
                                 "qemu-system-x86" \
                                 "qemu-utils" \
+                                "reuse" \
                                 "rustup" \
                                 "sed" \
                                 "strace" \
