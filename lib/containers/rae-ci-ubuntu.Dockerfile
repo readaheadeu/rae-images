@@ -89,6 +89,7 @@ RUN             apt-get install -y \
                                 "strace" \
                                 "sudo" \
                                 "systemd" \
+                                "systemd-dev" \
                                 "tar" \
                                 "texinfo" \
                                 "util-linux" \
