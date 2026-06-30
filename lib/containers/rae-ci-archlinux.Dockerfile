@@ -28,6 +28,7 @@ RUN             pacman -S --needed --noconfirm \
                         audit \
                         clang \
                         coreutils \
+                        cross \
                         curl \
                         dbus \
                         expat \
